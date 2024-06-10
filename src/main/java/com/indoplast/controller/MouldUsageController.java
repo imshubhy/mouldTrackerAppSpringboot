@@ -1,5 +1,6 @@
 package com.indoplast.controller;
 
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import com.indoplast.services.MouldUsageService;
 
 @RestController
 @RequestMapping("/api/mouldUsages")
+
 public class MouldUsageController {
 
     private final MouldUsageService mouldUsageService;

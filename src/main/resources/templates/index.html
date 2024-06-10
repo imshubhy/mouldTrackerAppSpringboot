@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mould Tracking System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f9f9f9;
+        }
+
+        .container {
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 500px;
+            width: 90%;
+            margin: 20px;
+        }
+
+        header {
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 26px;
+        }
+
+        section {
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        input, button {
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>Mould Tracking System</header>
+        
+        <section>
+            <h2>Insert Mould</h2>
+            <form id="insertMouldForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="manufacturer">Manufacturer:</label>
+                <input type="text" id="manufacturer" name="manufacturer" required>
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+                <label for="lastMaintenanceDate">Last Maintenance Date:</label>
+                <input type="date" id="lastMaintenanceDate" name="lastMaintenanceDate" required>
+                <button type="submit">Insert Mould</button>
+            </form>
+        </section>
+        
+        <section>
+            <h2>Issue Mould</h2>
+            <form id="issueMouldForm">
+                <label for="mouldId">Mould ID:</label>
+                <input type="number" id="mouldId" name="mouldId" required>
+                <button type="submit">Issue Mould</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Return Mould</h2>
+            <form id="returnMouldForm">
+                <label for="logId">Log ID:</label>
+                <input type="number" id="logId" name="logId" required>
+                <label for="productionsMade">Productions Made:</label>
+                <input type="number" id="productionsMade" name="productionsMade" required>
+                <button type="submit">Return Mould</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById('insertMouldForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const manufacturer = document.getElementById('manufacturer').value;
+            const location = document.getElementById('location').value;
+            const lastMaintenanceDate = document.getElementById('lastMaintenanceDate').value;
+
+            const data = {
+                name: name,
+                manufacturer: manufacturer,
+                location: location,
+                lastMaintenanceDate: lastMaintenanceDate
+            };
+
+            fetch('http://localhost:8088/api/mouldUsages/insertMould', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Mould inserted successfully!');
+                document.getElementById('insertMouldForm').reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            });
+        });
+
+        document.getElementById('issueMouldForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const mouldId = document.getElementById('mouldId').value;
+
+            fetch(`http://localhost:8088/api/mouldUsages/issue/${mouldId}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Mould issued successfully!');
+                document.getElementById('issueMouldForm').reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            });
+        });
+
+        document.getElementById('returnMouldForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const logId = document.getElementById('logId').value;
+            const productionsMade = document.getElementById('productionsMade').value;
+
+            fetch(`http://localhost:8088/api/mouldUsages/${logId}/return?productionsMade=${productionsMade}`, {
+                method: 'POST',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Mould returned successfully!');
+                document.getElementById('returnMouldForm').reset();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
