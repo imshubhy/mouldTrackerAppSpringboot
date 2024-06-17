@@ -1,18 +1,9 @@
-package com.indoplast.model;
-
+package com.indoplast.DTO;
 
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
-public class Mould {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MouldDTO {
     private Long id;
     private String name;
     private String manufacturer;

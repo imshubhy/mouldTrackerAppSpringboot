@@ -1,43 +1,53 @@
 package com.indoplast.controller;
-
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.indoplast.model.Mould;
-import com.indoplast.model.MouldUsageDTO;
-import com.indoplast.services.MouldService;
+import com.indoplast.DTO.MouldUsageDTO;
 import com.indoplast.services.MouldUsageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/mouldUsages")
-
 public class MouldUsageController {
 
     private final MouldUsageService mouldUsageService;
-    private final MouldService mouldService;
 
-    public MouldUsageController(MouldUsageService mouldUsageService, MouldService mouldService) {
+    @Autowired
+    public MouldUsageController(MouldUsageService mouldUsageService) {
         this.mouldUsageService = mouldUsageService;
-        this.mouldService = mouldService;
     }
 
+    @GetMapping
+    public List<MouldUsageDTO> getAllMouldUsages() {
+        return mouldUsageService.getAllMouldUsages();
+    }
+
+    @GetMapping("/{logId}")
+    public MouldUsageDTO getMouldUsageById(@PathVariable Long logId) {
+        return mouldUsageService.getMouldUsageById(logId);
+    }
+    
     @PostMapping("/issue/{mouldId}")
-    public MouldUsageDTO issueMould(@PathVariable Long mouldId) {
-        return mouldUsageService.issueMould(mouldId);
+    public ResponseEntity<MouldUsageDTO> issueMould(@PathVariable Long mouldId, @RequestParam String receiverName) {
+        MouldUsageDTO mouldUsageDTO = mouldUsageService.issueMould(mouldId, receiverName);
+        return ResponseEntity.ok(mouldUsageDTO);
     }
+    
+    
+  // old working
+//    @PostMapping("/issue/{mouldId}")
+//    public MouldUsageDTO issueMould(@PathVariable Long mouldId) {
+//        return mouldUsageService.issueMould(mouldId);
+//    }
 
-    @PostMapping("/{logId}/return")
+    
+    
+    
+    
+    
+    @PostMapping("/return/{logId}")
     public MouldUsageDTO returnMould(@PathVariable Long logId, @RequestParam int productionsMade) {
         return mouldUsageService.returnMould(logId, productionsMade);
-    }
-
-    @PostMapping("/insertMould")
-    public Mould insertMould(@RequestBody Mould mould) {
-        return mouldService.saveMould(mould);
     }
 }

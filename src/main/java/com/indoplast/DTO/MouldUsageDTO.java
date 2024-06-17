@@ -1,25 +1,10 @@
-package com.indoplast.model;
-
+package com.indoplast.DTO;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-@Entity
-public class MouldUsage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MouldUsageDTO {
     private Long logId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mould_id")
-    private Mould mould;
-
+    private Long mouldId;
     private int productionsMade;
     private LocalDate issueDate;
     private LocalDate returnDate;
@@ -34,12 +19,12 @@ public class MouldUsage {
         this.logId = logId;
     }
 
-    public Mould getMould() {
-        return mould;
+    public Long getMouldId() {
+        return mouldId;
     }
 
-    public void setMould(Mould mould) {
-        this.mould = mould;
+    public void setMouldId(Long mouldId) {
+        this.mouldId = mouldId;
     }
 
     public int getProductionsMade() {
