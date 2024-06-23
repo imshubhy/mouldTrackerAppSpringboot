@@ -4,64 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mould Tracking System Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: #f9f9f9;
+            background: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
         .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            width: 90%;
-            margin: 20px;
+            max-width: 1400px;
+            width: 100%;
+            padding: 20px;
         }
         .card {
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
         }
         .card-header {
             background: #4CAF50;
             color: white;
             text-align: center;
             padding: 15px;
-            font-size: 20px;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 16px;
-            color: #333;
-        }
-        .form-group input[type="text"],
-        .form-group input[type="number"],
-        .form-group input[type="date"] {
-            width: calc(100% - 24px);
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            outline: none;
-            box-sizing: border-box;
+            font-size: 22px;
+            font-weight: bold;
         }
         .form-group button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             font-size: 16px;
             border: none;
             border-radius: 4px;
@@ -73,137 +53,221 @@
         .form-group button:hover {
             background-color: #45a049;
         }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
+        .response-container {
+            margin-top: 20px;
+        }
+        .response-card {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Insert Mould Card -->
-        <div class="card">
-            <div class="card-header">Insert Mould</div>
-            <div class="card-body">
-                <form id="insertMouldForm">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
+        <div class="row">
+            <!-- Insert Mould Card -->
+            <div class="col-md-6">
+                <div class="card response-card">
+                    <div class="card-header">Insert Mould</div>
+                    <div class="card-body">
+                        <form id="insertMouldForm">
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="manufacturer">Manufacturer:</label>
+                                <input type="text" id="manufacturer" name="manufacturer" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location:</label>
+                                <input type="text" id="location" name="location" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastMaintenanceDate">Last Maintenance Date:</label>
+                                <input type="date" id="lastMaintenanceDate" name="lastMaintenanceDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">Insert Mould</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="manufacturer">Manufacturer:</label>
-                        <input type="text" id="manufacturer" name="manufacturer" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location:</label>
-                        <input type="text" id="location" name="location" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastMaintenanceDate">Last Maintenance Date:</label>
-                        <input type="date" id="lastMaintenanceDate" name="lastMaintenanceDate" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Insert Mould</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
 
-         <!-- Issue Mould Card -->
-        <div class="card">
-            <div class="card-header">Issue Mould</div>
-            <div class="card-body">
-                <form id="issueMouldForm">
-                    <div class="form-group">
-                        <label for="issueMouldId">Mould ID:</label>
-                        <input type="number" id="issueMouldId" name="issueMouldId" required>
+            <!-- Issue Mould Card -->
+            <div class="col-md-6">
+                <div class="card response-card">
+                    <div class="card-header">Issue Mould</div>
+                    <div class="card-body">
+                        <form id="issueMouldForm">
+                            <div class="form-group">
+                                <label for="issueMouldId">Mould ID:</label>
+                                <input type="number" id="issueMouldId" name="issueMouldId" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="receiverName">Receiver Name:</label>
+                                <input type="text" id="receiverName" name="receiverName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">Issue Mould</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="receiverName">Receiver Name:</label>
-                        <input type="text" id="receiverName" name="receiverName" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Issue Mould</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Return Mould Card -->
-        <div class="card">
-            <div class="card-header">Return Mould</div>
-            <div class="card-body">
-                <form id="returnMouldForm">
-                    <div class="form-group">
-                        <label for="returnMouldLogId">Log ID:</label>
-                        <input type="number" id="returnMouldLogId" name="returnMouldLogId" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="returnMouldProductions">Productions Made:</label>
-                        <input type="number" id="returnMouldProductions" name="returnMouldProductions" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Return Mould</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Get Mould by ID Card -->
-        <div class="card">
-            <div class="card-header">Get Mould by ID</div>
-            <div class="card-body">
-                <form id="getMouldByIdForm">
-                    <div class="form-group">
-                        <label for="getMouldById">Mould ID:</label>
-                        <input type="number" id="getMouldById" name="getMouldById" required>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Get Mould</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Get All Moulds Card -->
-        <div class="card">
-            <div class="card-header">Get All Moulds</div>
-            <div class="card-body">
-                <div class="button-group">
-                    <button id="getAllMouldsButton">Get All Moulds</button>
                 </div>
             </div>
         </div>
 
-        <!-- Get Mould Usage by ID Card -->
-        <div class="card">
-            <div class="card-header">Get Mould Usage by ID</div>
-            <div class="card-body">
-                <form id="getMouldUsageByIdForm">
-                    <div class="form-group">
-                        <label for="getMouldUsageById">Log ID:</label>
-                        <input type="number" id="getMouldUsageById" name="getMouldUsageById" required>
+        <div class="row">
+            <!-- Return Mould Card -->
+            <div class="col-md-6">
+                <div class="card response-card">
+                    <div class="card-header">Return Mould</div>
+                    <div class="card-body">
+                        <form id="returnMouldForm">
+                            <div class="form-group">
+                                <label for="returnMouldLogId">Log ID:</label>
+                                <input type="number" id="returnMouldLogId" name="returnMouldLogId" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="returnMouldProductions">Productions Made:</label>
+                                <input type="number" id="returnMouldProductions" name="returnMouldProductions" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">Return Mould</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <button type="submit">Get Mould Usage</button>
-                    </div>
-                </form>
+                </div>
             </div>
-        </div>
 
-        <!-- Get All Mould Usages Card -->
-        <div class="card">
-            <div class="card-header">Get All Mould Usages</div>
-            <div class="card-body">
-                <div class="button-group">
-                    <button id="getAllMouldUsagesButton">Get All Mould Usages</button>
+            <!-- Get Mould by ID Card -->
+            <div class="col-md-6">
+                <div class="card response-card">
+                    <div class="card-header">Get Mould by ID</div>
+                    <div class="card-body">
+                        <form id="getMouldByIdForm">
+                            <div class="form-group">
+                                <label for="getMouldById">Mould ID:</label>
+                                <input type="number" id="getMouldById" name="getMouldById" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">Get Mould</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <!-- Get Mould Usage by ID Card -->
+            <div class="col-md-6">
+                <div class="card response-card">
+                    <div class="card-header">Get Mould Usage by ID</div>
+                    <div class="card-body">
+                        <form id="getMouldUsageByIdForm">
+                            <div class="form-group">
+                                <label for="getMouldUsageById">Log ID:</label>
+                                <input type="number" id="getMouldUsageById" name="getMouldUsageById" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">Get Mould Usage</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get All Moulds Card -->
+            <div class="col-md-6">
+                <div class="card response-card">
+                    <div class="card-header">Get All Moulds</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <button id="getAllMouldsButton" class="btn btn-success">Get All Moulds</button>
+                        </div>
+                        <div class="table-container" id="allMouldsResponse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Get All Mould Usages Card -->
+            <div class="col-md-12">
+                <div class="card response-card">
+                    <div class="card-header">Get All Mould Usages</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <button id="getAllMouldUsagesButton" class="btn btn-success">Get All Mould Usages</button>
+                        </div>
+                        <div class="table-container" id="allMouldUsagesResponse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Response Display Area -->
+        <div class="response-container" id="responseContainer"></div>
     </div>
 
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        function displayResponse(message, type = 'success') {
+            const responseContainer = document.getElementById('responseContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                <strong>${type === 'success' ? 'Success' : 'Error'}!</strong> ${message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button
+                `;
+            responseContainer.appendChild(alertDiv);
+        }
+
+        function createTable(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = ''; // Clear previous content
+
+            if (data.length === 0) {
+                container.innerHTML = '<p>No data found.</p>';
+                return;
+            }
+
+            const table = document.createElement('table');
+            table.className = 'table table-striped';
+
+            // Create table header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            Object.keys(data[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create table body
+            const tbody = document.createElement('tbody');
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                Object.values(item).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    row.appendChild(td);
+                });
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            container.appendChild(table);
+        }
+
         document.getElementById('insertMouldForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const name = document.getElementById('name').value;
@@ -232,12 +296,12 @@
                 return response.json();
             })
             .then(data => {
-                alert('Mould inserted successfully!');
+                displayResponse('Mould inserted successfully!');
                 document.getElementById('insertMouldForm').reset();
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error: ' + error.message);
+                displayResponse('Error: ' + error.message, 'danger');
             });
         });
 
@@ -256,17 +320,15 @@
                 return response.json();
             })
             .then(data => {
-                alert('Mould issued successfully!');
+                displayResponse('Mould issued successfully!');
                 document.getElementById('issueMouldForm').reset();
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error: ' + error.message);
+                displayResponse('Error: ' + error.message, 'danger');
             });
         });
 
-       
-       
         document.getElementById('returnMouldForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const logId = document.getElementById('returnMouldLogId').value;
@@ -282,12 +344,12 @@
                 return response.json();
             })
             .then(data => {
-                alert('Mould returned successfully!');
+                displayResponse('Mould returned successfully!');
                 document.getElementById('returnMouldForm').reset();
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error: ' + error.message);
+                displayResponse('Error: ' + error.message, 'danger');
             });
         });
 
@@ -303,12 +365,12 @@
                 return response.json();
             })
             .then(data => {
-                alert('Mould details: ' + JSON.stringify(data));
+                displayResponse('Mould details: ' + JSON.stringify(data));
                 document.getElementById('getMouldByIdForm').reset();
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error: ' + error.message);
+                displayResponse('Error: ' + error.message, 'danger');
             });
         });
 
@@ -321,11 +383,11 @@
                 return response.json();
             })
             .then(data => {
-                alert('All moulds: ' + JSON.stringify(data));
+                createTable('allMouldsResponse', data);
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error: ' + error.message);
+                displayResponse('Error: ' + error.message, 'danger');
             });
         });
 
@@ -341,12 +403,12 @@
                 return response.json();
             })
             .then(data => {
-                alert('Mould usage details: ' + JSON.stringify(data));
+                displayResponse('Mould usage details: ' + JSON.stringify(data));
                 document.getElementById('getMouldUsageByIdForm').reset();
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error: ' + error.message);
+                displayResponse('Error: ' + error.message, 'danger');
             });
         });
 
@@ -359,11 +421,11 @@
                 return response.json();
             })
             .then(data => {
-                alert('All mould usages: ' + JSON.stringify(data));
+                createTable('allMouldUsagesResponse', data);
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error: ' + error.message);
+                displayResponse('Error: ' + error.message, 'danger');
             });
         });
     </script>

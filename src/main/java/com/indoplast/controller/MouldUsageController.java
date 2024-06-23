@@ -35,14 +35,7 @@ public class MouldUsageController {
     }
     
     
-  // old working
-//    @PostMapping("/issue/{mouldId}")
-//    public MouldUsageDTO issueMould(@PathVariable Long mouldId) {
-//        return mouldUsageService.issueMould(mouldId);
-//    }
-
-    
-    
+ 
     
     
     
