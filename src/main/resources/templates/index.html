@@ -19,21 +19,26 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             width: 100%;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .title {
             text-align: center;
-            font-size: 28px;
+            font-size: 36px;
             font-weight: bold;
             margin-bottom: 20px;
+            color: #4CAF50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .services,
-        .response-container {
+        .services {
             text-align: center;
+            margin-bottom: 20px;
         }
 
         .service-link {
@@ -41,12 +46,18 @@
             font-size: 18px;
             color: #007bff;
             cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .service-link:hover {
+            color: #4CAF50;
         }
 
         .card {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
@@ -54,12 +65,29 @@
             color: white;
             text-align: center;
             padding: 15px;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
         }
 
-        .form-container {
-            display: none;
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #555;
+        }
+
+        #responseContainer {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -75,6 +103,11 @@
             <span class="service-link" onclick="showForm('getMouldUsageByIdForm')">Get Mould Usage by ID</span>
             <span class="service-link" onclick="showForm('getAllMouldsForm')">Get All Moulds</span>
             <span class="service-link" onclick="showForm('getAllMouldUsagesForm')">Get All Mould Usages</span>
+        </div>
+
+        <!-- Description box -->
+        <div class="description">
+            Manage and track moulds, issue and return them, and get detailed reports of their usage.
         </div>
 
         <div id="insertMouldForm" class="form-container">
@@ -190,104 +223,108 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
-            $('#insertMould').submit(function (event) {
-                event.preventDefault();
-                submitInsertMouldForm();
-            });
+			<!-- Continuing from where we left off in the JavaScript section -->
 
-            $('#issueMould').submit(function (event) {
-                event.preventDefault();
-                const receiverName = $('#receiverName').val().trim();
-                const mouldId = $('#issueMouldId').val();
-                const url = `http://localhost:8088/api/mouldUsages/issue/${mouldId}?receiverName=${encodeURIComponent(receiverName)}`;
-                submitForm('issueMould', url, 'POST');
-            });
+			$('#insertMould').submit(function (event) {
+			    event.preventDefault();
+			    submitInsertMouldForm();
+			});
 
-            $('#returnMould').submit(function (event) {
-                event.preventDefault();
-                submitForm('returnMould', `http://localhost:8088/api/mouldUsages/return/${$('#returnMouldLogId').val()}?productionsMade=${$('#returnMouldProductions').val()}`, 'POST');
-            });
+			$('#issueMould').submit(function (event) {
+			    event.preventDefault();
+			    const receiverName = $('#receiverName').val().trim();
+			    const mouldId = $('#issueMouldId').val();
+			    const url = `http://localhost:8088/api/mouldUsages/issue/${mouldId}?receiverName=${encodeURIComponent(receiverName)}`;
+			    submitForm('issueMould', url, 'POST');
+			});
 
-            $('#getMouldById').submit(function (event) {
-                event.preventDefault();
-                submitForm('getMouldById', `http://localhost:8088/api/moulds/${$('#getMouldByIdInput').val()}`, 'GET');
-            });
+			$('#returnMould').submit(function (event) {
+			    event.preventDefault();
+			    submitForm('returnMould', `http://localhost:8088/api/mouldUsages/return/${$('#returnMouldLogId').val()}?productionsMade=${$('#returnMouldProductions').val()}`, 'POST');
+			});
 
-            $('#getMouldUsageById').submit(function (event) {
-                event.preventDefault();
-                submitForm('getMouldUsageById', `http://localhost:8088/api/mouldUsages/${$('#getMouldUsageByIdInput').val()}`, 'GET');
-            });
+			$('#getMouldById').submit(function (event) {
+			    event.preventDefault();
+			    submitForm('getMouldById', `http://localhost:8088/api/moulds/${$('#getMouldByIdInput').val()}`, 'GET');
+			});
 
-            $('#getAllMoulds').submit(function (event) {
-                event.preventDefault();
-                submitForm('getAllMoulds', 'http://localhost:8088/api/moulds', 'GET');
-            });
+			$('#getMouldUsageById').submit(function (event) {
+			    event.preventDefault();
+			    submitForm('getMouldUsageById', `http://localhost:8088/api/mouldUsages/${$('#getMouldUsageByIdInput').val()}`, 'GET');
+			});
 
-            $('#getAllMouldUsages').submit(function (event) {
-                event.preventDefault();
-                submitForm('getAllMouldUsages', 'http://localhost:8088/api/mouldUsages', 'GET');
-            });
+			$('#getAllMoulds').submit(function (event) {
+			    event.preventDefault();
+			    submitForm('getAllMoulds', 'http://localhost:8088/api/moulds', 'GET');
+			});
 
-            function submitInsertMouldForm() {
-                const formData = {
-                    name: $('#name').val(),
-                    manufacturer: $('#manufacturer').val(),
-                    location: $('#location').val(),
-                    lastMaintenanceDate: $('#lastMaintenanceDate').val()
-                };
+			$('#getAllMouldUsages').submit(function (event) {
+			    event.preventDefault();
+			    submitForm('getAllMouldUsages', 'http://localhost:8088/api/mouldUsages', 'GET');
+			});
 
-                $.ajax({
-                    url: 'http://localhost:8088/api/moulds',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
-                    success: function (response) {
-                        $('#responseContainer').html(`<pre>${JSON.stringify(response, null, 2)}</pre>`);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        $('#responseContainer').html(`<pre>${jqXHR.responseText}</pre>`);
-                    }
-                });
-            }
+			function submitInsertMouldForm() {
+			    const formData = {
+			        name: $('#name').val(),
+			        manufacturer: $('#manufacturer').val(),
+			        location: $('#location').val(),
+			        lastMaintenanceDate: $('#lastMaintenanceDate').val()
+			    };
 
-            function submitForm(formId, url, method) {
-                const data = $(`#${formId}`).serialize();
-                $.ajax({
-                    url: url,
-                    method: method,
-                    data: method === 'GET' ? null : data,
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    success: function (response) {
-                        if (Array.isArray(response)) {  // Handle array responses
-                            let table = '<table class="table table-striped">';
-                            table += '<thead><tr>';
-                            Object.keys(response[0]).forEach(key => {
-                                table += `<th>${key}</th>`;
-                            });
-                            table += '</tr></thead><tbody>';
-                            response.forEach(item => {
-                                table += createTableRow(item);
-                            });
-                            table += '</tbody></table>';
-                            $('#responseContainer').html(table);
-                        } else if (typeof response === 'object') {  // Handle single object response
-                            let table = '<table class="table table-striped">';
-                            table += '<thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>';
-                            table += createTableRow(response);
-                            table += '</tbody></table>';
-                            $('#responseContainer').html(table);
-                        } else {  // Handle plain text or other responses
-                            $('#responseContainer').html(`<pre>${response}</pre>`);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        $('#responseContainer').html(`<pre>${jqXHR.responseText}</pre>`);
-                    }
-                });
-            }
-        });
-    </script>
+			    $.ajax({
+			        url: 'http://localhost:8088/api/moulds',
+			        method: 'POST',
+			        contentType: 'application/json',
+			        data: JSON.stringify(formData),
+			        success: function (response) {
+			            $('#responseContainer').html(`<pre>${JSON.stringify(response, null, 2)}</pre>`);
+			        },
+			        error: function (jqXHR, textStatus, errorThrown) {
+			            $('#responseContainer').html(`<pre>${jqXHR.responseText}</pre>`);
+			        }
+			    });
+			}
 
-</body>
+			function submitForm(formId, url, method) {
+			    const data = $(`#${formId}`).serialize();
+			    $.ajax({
+			        url: url,
+			        method: method,
+			        data: method === 'GET' ? null : data,
+			        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			        success: function (response) {
+			            if (Array.isArray(response)) {  // Handle array responses
+			                let table = '<table class="table table-striped">';
+			                table += '<thead><tr>';
+			                Object.keys(response[0]).forEach(key => {
+			                    table += `<th>${key}</th>`;
+			                });
+			                table += '</tr></thead><tbody>';
+			                response.forEach(item => {
+			                    table += createTableRow(item);
+			                });
+			                table += '</tbody></table>';
+			                $('#responseContainer').html(table);
+			            } else if (typeof response === 'object') {  // Handle single object response
+			                let table = '<table class="table table-striped">';
+			                table += '<thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>';
+			                table += createTableRow(response);
+			                table += '</tbody></table>';
+			                $('#responseContainer').html(table);
+			            } else {  // Handle plain text or other responses
+			                $('#responseContainer').html(`<pre>${response}</pre>`);
+			            }
+			        },
+			        error: function (jqXHR, textStatus, errorThrown) {
+			            $('#responseContainer').html(`<pre>${jqXHR.responseText}</pre>`);
+			        }
+			    });
+			}
+			});
+			</script>
 
-</html>
+			</body>
+
+			</html>
+
+               
