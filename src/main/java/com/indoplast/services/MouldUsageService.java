@@ -40,41 +40,29 @@ public class MouldUsageService {
         return mapMouldUsageToDTO(mouldUsage);
     }
     
-    // issue mould
-    
     public MouldUsageDTO issueMould(Long mouldId, String receiverName) {
         Mould mould = mouldRepository.findById(mouldId).orElseThrow(() -> new RuntimeException("Mould not found"));
         
         MouldUsage mouldUsage = new MouldUsage();
         mouldUsage.setMould(mould);
         mouldUsage.setIssueDate(LocalDate.now());
-        mouldUsage.setReceiverName(receiverName); // Set the receiver's name
+        mouldUsage.setReceiverName(receiverName);
         mouldUsageRepository.save(mouldUsage);
         
         return mapMouldUsageToDTO(mouldUsage);
     }
 
-    // old issue mould
-//    public MouldUsageDTO issueMould(Long mouldId) {
-//        Mould mould = mouldRepository.findById(mouldId)
-//                .orElseThrow(() -> new EntityNotFoundException("Mould not found with id: " + mouldId));
-//
-//        MouldUsage mouldUsage = new MouldUsage();
-//        mouldUsage.setMould(mould);
-//        mouldUsage.setIssueDate(LocalDate.now());
-//
-//        MouldUsage savedMouldUsage = mouldUsageRepository.save(mouldUsage);
-//        return mapMouldUsageToDTO(savedMouldUsage);
-//    }
-
-    
-    
     public MouldUsageDTO returnMould(Long logId, int productionsMade) {
         MouldUsage mouldUsage = mouldUsageRepository.findById(logId)
                 .orElseThrow(() -> new EntityNotFoundException("Mould Usage not found with logId: " + logId));
 
         mouldUsage.setProductionsMade(productionsMade);
         mouldUsage.setReturnDate(LocalDate.now());
+
+        Mould mould = mouldUsage.getMould();
+        int updatedTotalProductions = mould.getTotalProductionsMade() + productionsMade; // Calculate new total
+        mould.setTotalProductionsMade(updatedTotalProductions); // Set new total
+        mouldRepository.save(mould); // Save the updated mould entity
 
         MouldUsage savedMouldUsage = mouldUsageRepository.save(mouldUsage);
         return mapMouldUsageToDTO(savedMouldUsage);
@@ -87,18 +75,7 @@ public class MouldUsageService {
         mouldUsageDTO.setProductionsMade(mouldUsage.getProductionsMade());
         mouldUsageDTO.setIssueDate(mouldUsage.getIssueDate());
         mouldUsageDTO.setReturnDate(mouldUsage.getReturnDate());
-        mouldUsageDTO.setReceiverName(mouldUsage.getReceiverName()); // Set the receiver's name
+        mouldUsageDTO.setReceiverName(mouldUsage.getReceiverName());
         return mouldUsageDTO;
     }
-    
-    // old mapusage
-//    private MouldUsageDTO mapMouldUsageToDTO(MouldUsage mouldUsage) {
-//        MouldUsageDTO dto = new MouldUsageDTO();
-//        dto.setLogId(mouldUsage.getLogId());
-//        dto.setMouldId(mouldUsage.getMould().getId());
-//        dto.setProductionsMade(mouldUsage.getProductionsMade());
-//        dto.setIssueDate(mouldUsage.getIssueDate());
-//        dto.setReturnDate(mouldUsage.getReturnDate());
-//        return dto;
-//    }
 }

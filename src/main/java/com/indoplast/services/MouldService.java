@@ -21,7 +21,6 @@ public class MouldService {
         this.mouldRepository = mouldRepository;
     }
 
-  
     public List<MouldDTO> getAllMoulds() {
         List<Mould> moulds = mouldRepository.findAll();
         return moulds.stream()
@@ -35,11 +34,12 @@ public class MouldService {
         mould.setManufacturer(mouldDTO.getManufacturer());
         mould.setLocation(mouldDTO.getLocation());
         mould.setLastMaintenanceDate(mouldDTO.getLastMaintenanceDate());
+        mould.setTotalProductionsMade(mouldDTO.getTotalProductionsMade()); // Ensure this is set
 
         Mould savedMould = mouldRepository.save(mould);
         return mapMouldToDTO(savedMould);
     }
-    
+
     public MouldDTO getMouldById(Long id) {
         Optional<Mould> optionalMould = mouldRepository.findById(id);
         if (optionalMould.isPresent()) {
@@ -56,6 +56,7 @@ public class MouldService {
         dto.setManufacturer(mould.getManufacturer());
         dto.setLocation(mould.getLocation());
         dto.setLastMaintenanceDate(mould.getLastMaintenanceDate());
+        dto.setTotalProductionsMade(mould.getTotalProductionsMade()); // Ensure this is mapped
         return dto;
     }
 }

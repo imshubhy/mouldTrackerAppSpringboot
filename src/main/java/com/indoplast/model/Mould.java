@@ -1,9 +1,6 @@
 package com.indoplast.model;
 
-
-
 import java.time.LocalDate;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +15,7 @@ public class Mould {
     private String manufacturer;
     private String location;
     private LocalDate lastMaintenanceDate;
+    private int totalProductionsMade; // Field to store total productions made
 
     // Getters and setters
 
@@ -59,5 +57,13 @@ public class Mould {
 
     public void setLastMaintenanceDate(LocalDate lastMaintenanceDate) {
         this.lastMaintenanceDate = lastMaintenanceDate;
+    }
+
+    public int getTotalProductionsMade() {
+        return totalProductionsMade;
+    }
+
+    public void setTotalProductionsMade(int totalProductionsMade) {
+        this.totalProductionsMade = totalProductionsMade;
     }
 }

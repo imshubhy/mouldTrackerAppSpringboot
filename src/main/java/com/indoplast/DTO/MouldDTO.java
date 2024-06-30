@@ -1,6 +1,5 @@
 package com.indoplast.DTO;
 
-
 import java.time.LocalDate;
 
 public class MouldDTO {
@@ -9,6 +8,7 @@ public class MouldDTO {
     private String manufacturer;
     private String location;
     private LocalDate lastMaintenanceDate;
+    private int totalProductionsMade; // Field to store total productions made
 
     // Getters and setters
 
@@ -50,5 +50,13 @@ public class MouldDTO {
 
     public void setLastMaintenanceDate(LocalDate lastMaintenanceDate) {
         this.lastMaintenanceDate = lastMaintenanceDate;
+    }
+
+    public int getTotalProductionsMade() {
+        return totalProductionsMade;
+    }
+
+    public void setTotalProductionsMade(int totalProductionsMade) {
+        this.totalProductionsMade = totalProductionsMade;
     }
 }
